@@ -2,6 +2,8 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import AgregarTarea from "./components/AgregarTarea";
+import UserApps from "./components/UserApps";
 
 const Items = ({ nombre, visto }) => {
   return (
@@ -13,10 +15,10 @@ const Items = ({ nombre, visto }) => {
 };
 
 let listado = [
-  { nombre: "Intalaciones Necesarias", visto: true },
-  { nombre: "Curso Pyhton", visto: true },
-  { nombre: "Curso React", visto: true },
-  { nombre: "Curso Angular", visto: false },
+  { id: 1, nombre: "Intalaciones Necesarias", visto: true },
+  { id: 2, nombre: "Curso Pyhton", visto: true },
+  { id: 3, nombre: "Curso React", visto: true },
+  { id: 4, nombre: "Curso Angular", visto: false },
 ];
 
 function App() {
@@ -26,19 +28,28 @@ function App() {
     setArreglo([...arreglo, { nombre: "nuevo", visto: true }]);
   };
 
+  const onAgregarTarea = (tarea) => {
+    let valor = tarea.trim();
+    if (valor < 1) return;
+    const envio = {
+      id: arreglo.length + 1,
+      nombre: valor,
+      visto: false,
+    };
+
+    setArreglo([...arreglo, envio]);
+  };
+
   return (
     <>
-      <h1>
-        Listado
-        <ol>
-          {arreglo.map((comp) => (
-            <Items key={comp.nombre} nombre={comp.nombre} visto={comp.visto}>
-              {" "}
-            </Items>
-          ))}
-        </ol>
-        <button onClick={() => astask()}>Agregar Tareas</button>
-      </h1>
+      <h1>Listado</h1>
+      <AgregarTarea agregartarea={onAgregarTarea} />
+      <ol>
+        {arreglo.map((comp) => (
+          <Items key={comp.id} nombre={comp.nombre} visto={comp.visto}></Items>
+        ))}
+      </ol>
+      <UserApps />
     </>
   );
 }
